@@ -22,6 +22,8 @@ const usersEndPoint = 'https://boolean-spec-frontend.vercel.app/freetestapi/user
 // Stampare i dati in console in un messaggio ben formattato.
 // Testa la funzione con la query "london"
 
+
+
 async function call(url) {
     const result = await fetch(url)
     const data = await result.json()
@@ -32,16 +34,16 @@ async function getDashboardData(query) {
     const promise1 = call(`https://boolean-spec-frontend.vercel.app/freetestapi/destinations?search=${query}`)
     const promise2 = call(`https://boolean-spec-frontend.vercel.app/freetestapi/weathers?search=${query}`)
     const promise3 = call(`https://boolean-spec-frontend.vercel.app/freetestapi/airports?search=${query}`)
-
-    const result = await Promise.all([promise1, promise2, promise3])
-    console.log(result)
+    const [destination, weather, airport] = await Promise.all([promise1, promise2, promise3])
+    console.log(destination, weather, airport)
 
     return {
-        city: result[0][0].name,
-        country: result[0][0].country,
-        temperature: result[1][0].temperature,
-        weather: result[1][0].weather_description,
-        airport: result[2][0].name
+
+        city: destination[0].name,
+        country: destination[0].country,
+        temperature: weather[0].temperature,
+        weather: weather[0].weather_description,
+        airport: airport[0].name
     }
 }
 
@@ -51,3 +53,13 @@ async function getDashboardData(query) {
     Today there are ${dashboardCity.temperature} degrees and the weather is ${dashboardCity.weather}.
     The main airport is ${dashboardCity.airport}.`)
 })()
+
+// const videogames = [
+//     { anno: 2020, titolo: "The Last of Us Part II", genere: "Action-Adventure" },
+//     { anno: 2015, titolo: "The Witcher 3: Wild Hunt", genere: "RPG" },
+//     { anno: 2018, titolo: "Red Dead Redemption 2", genere: "Action-Adventure" },
+//     { anno: 2017, titolo: "The Legend of Zelda: Breath of the Wild", genere: "Action-RPG" },
+//     { anno: 2011, titolo: "Dark Souls", genere: "Action-RPG" }
+// ];
+
+// const result = videogames.filter(el => el.anno < 2000)
